@@ -1,26 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const Movie = require("../models/movie");
+const {
+  getMovies,
+  addMovie,
+  getMovieById,
+  updateMovie,
+  deleteMovie,
+} = require("../controllers/movieController");
 
 // List all movies
-router.get("/", async (req, res) => {
-  try {
-    const movies = await Movie.find();
-    res.send(movies);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
+router.get("/", getMovies);
 
 // Add a movie
-router.post("/", async (req, res) => {
-  try {
-    const movie = new Movie(req.body);
-    await movie.save();
-    res.status(201).send(movie);
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
+router.post("/", addMovie);
+
+// Get a movie by ID
+router.get("/:id", getMovieById);
+
+// Update a movie
+router.put("/:id", updateMovie);
+
+// Delete a movie
+router.delete("/:id", deleteMovie);
 
 module.exports = router;
