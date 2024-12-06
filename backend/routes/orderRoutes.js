@@ -34,26 +34,27 @@ router.post("/", async (req, res) => {
 
 // GET a specific order by ID
 router.get("/:id", async (req, res) => {
+    
     try {
         const { id } = req.params;
         console.log("Received ID:", id);
+
         // Validate ObjectId format
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            console.error("Invalid ID format:", id);
             return res.status(400).send({ error: "Invalid ID format." });
         }
 
         // Find the order by ID
         const order = await Order.findById(id);
-        console.log("Fetched Order:", order);
+        console.log("Fetched Order:", order.orderid);
 
         if (!order) {
-            console.error("Order not found for ID:", id);
             return res.status(404).send({ message: "Order not found" });
         }
 
-        res.send(order);
+        res.send(order.orderid);
     } catch (err) {
+        //console.error("Error fetching order: " + err);
         res.status(500).send({ message: "Error fetching order", error: err.message });
     }
 });
