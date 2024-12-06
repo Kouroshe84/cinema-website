@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 app.use("/api/movies", require("./routes/movieRoutes")); // Movies
 app.use("/api/users", require("./routes/userRoutes"));   // Users
 app.use("/api/showtimes", require("./routes/showtimeRoutes")); // Showtimes
+app.use("/api/orders", require("./routes/orderRoutes"))
 //app.use("/api/tickets", require("./routes/ticketRoutes")); // Tickets
 
 // Server
