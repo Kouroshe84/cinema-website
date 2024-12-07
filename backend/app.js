@@ -22,11 +22,12 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// Route Handlers
-app.use("/api/movies", require("./routes/movieRoutes")); // Movie routes
-app.use("/api/users", require("./routes/userRoutes"));   // User routes
-app.use("/api/showtimes", require("./routes/showtimeRoutes")); // Showtime routes
-app.use("/api/tickets", require("./routes/ticketRoutes")); // Uncomment when ticket routes are ready
+// Registering Routes
+app.use("/api/movies", require("./routes/movieRoutes")); // Movies
+app.use("/api/users", require("./routes/userRoutes"));   // Users
+app.use("/api/showtimes", require("./routes/showtimeRoutes")); // Showtimes
+app.use("/api/orders", require("./routes/orderRoutes")); //Orders
+//app.use("/api/tickets", require("./routes/ticketRoutes")); // Uncomment when ticket routes are ready
 
 // Start the server
 const PORT = process.env.PORT || 5000;
