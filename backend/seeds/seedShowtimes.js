@@ -1,4 +1,20 @@
-const Showtime = require("./models/showtime");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const Showtime = require("../models/showtime");
+
+dotenv.config();
+
+// Connect to MongoDB
+(async () => {
+    try {
+      await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+      console.log("Database connected successfully!");
+      process.exit(0);
+    } catch (err) {
+      console.error("Database connection failed:", err.message);
+      process.exit(1);
+    }
+  })();
 
 const showtimes = [
     {
@@ -41,7 +57,7 @@ const showtimes = [
       time: "5:30 PM",
       availableSeats: 150,
     },
-  ]
+  ];
 
 const seedShowtimes = async () => {
   try {
