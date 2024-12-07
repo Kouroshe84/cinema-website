@@ -16,23 +16,29 @@ const getMovies = async (req, res) => {
 // @route   POST /api/movies
 // @access  Public
 const addMovie = async (req, res) => {
-  try {
-    const { title, genre, duration, releaseDate, showtimes } = req.body;
-
-    const movie = new Movie({
-      title,
-      genre,
-      duration,
-      releaseDate,
-      showtimes,
-    });
-
-    const createdMovie = await movie.save();
-    res.status(201).json(createdMovie);
-  } catch (error) {
-    res.status(400).json({ message: "Failed to add movie", error: error.message });
-  }
-};
+    try {
+      const { title, genre, duration, releaseDate, showtimes, posterUrl } = req.body;
+  
+      // Make sure the posterUrl is included in the request body
+      if (!posterUrl) {
+        return res.status(400).json({ message: "posterUrl is required" });
+      }
+  
+      const movie = new Movie({
+        title,
+        genre,
+        duration,
+        releaseDate,
+        showtimes,
+        posterUrl,
+      });
+  
+      const createdMovie = await movie.save();
+      res.status(201).json(createdMovie);
+    } catch (error) {
+      res.status(400).json({ message: "Failed to add movie", error: error.message });
+    }
+  };
 
 // @desc    Get a movie by ID
 // @route   GET /api/movies/:id
