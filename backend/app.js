@@ -26,8 +26,8 @@ app.get("/", (req, res) => {
 app.use("/api/movies", require("./routes/movieRoutes")); // Movies
 app.use("/api/users", require("./routes/userRoutes"));   // Users
 app.use("/api/showtimes", require("./routes/showtimeRoutes")); // Showtimes
-app.use("/api/orders", require("./routes/orderRoutes")); //Orders
-//app.use("/api/tickets", require("./routes/ticketRoutes")); // Uncomment when ticket routes are ready
+app.use("/api/orders", require("./routes/orderRoutes")); // Orders
+app.use("/api/tickets", require("./routes/ticketRoutes"));// Tickets
 
 // Start the server
 const PORT = process.env.PORT || 5000;
