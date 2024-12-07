@@ -8,4 +8,6 @@ router.post("/", orderController.createOrder);
 // GET a specific order by ID
 router.get("/:id", orderController.getOrderById);
 
+router.get("/movie/:id", orderController.getOrderByMovie);
+
 module.exports = router;
