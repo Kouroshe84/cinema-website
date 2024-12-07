@@ -11,6 +11,7 @@ const movieSchema = new mongoose.Schema({
       time: String,
     },
   ],
+  posterUrl: { type: String, required: true }, // Adding URL functionality for posters
 });
 
 module.exports = mongoose.model("Movie", movieSchema);
