@@ -2,33 +2,34 @@ const Showtime = require("../models/showtime");
 
 // Get all showtimes
 const getShowtimes = async (req, res) => {
-  try {
-    const showtimes = await Showtime.find();
-    res.status(200).json(showtimes);
-  } catch (error) {
-    res.status(500).json({ message: "Failed to fetch showtimes", error: error.message });
-  }
-};
+    try {
+      const showtimes = await Showtime.find().populate("movie");
+      res.status(200).json(showtimes);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch showtimes", error: error.message });
+    }
+  };
 
 // Add a new showtime
 const addShowtime = async (req, res) => {
-  try {
-    const { movieId, theater, screen, showDateTime, price } = req.body;
-
-    const showtime = new Showtime({
-      movieId,
-      theater,
-      screen,
-      showDateTime,
-      price,
-    });
-
-    const createdShowtime = await showtime.save();
-    res.status(201).json(createdShowtime);
-  } catch (error) {
-    res.status(400).json({ message: "Failed to add showtime", error: error.message });
-  }
-};
+    try {
+      const { movie, theater, screen, date, time, availableSeats } = req.body;
+  
+      const showtime = new Showtime({
+        movie,
+        theater,
+        screen,
+        date,
+        time,
+        availableSeats,
+      });
+  
+      const createdShowtime = await showtime.save();
+      res.status(201).json(createdShowtime);
+    } catch (error) {
+      res.status(400).json({ message: "Failed to add showtime", error: error.message });
+    }
+  };
 
 // Get a showtime by ID
 const getShowtimeById = async (req, res) => {
