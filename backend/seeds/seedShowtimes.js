@@ -1,73 +1,66 @@
 const mongoose = require("mongoose");
+const Showtime = require("../models/showtime"); // Adjust the path as needed
+const Movie = require("../models/movie"); // Adjust the path as needed
 const dotenv = require("dotenv");
-const Showtime = require("../models/showtime");
 
 dotenv.config();
 
-// Connect to MongoDB
-(async () => {
-    try {
-      await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-      console.log("Database connected successfully!");
-      process.exit(0);
-    } catch (err) {
-      console.error("Database connection failed:", err.message);
-      process.exit(1);
-    }
-  })();
-
-const showtimes = [
-    {
-      movie: "6754b5385308892ab83e501c",
-      theater: "Theater 1",
-      screen: 1,
-      date: new Date("2024-12-15"),
-      time: "7:00 PM",
-      availableSeats: 100,
-    },
-    {
-      movie: "6754b5385308892ab83e501f",
-      theater: "Theater 2",
-      screen: 2,
-      date: new Date("2024-12-15"),
-      time: "8:30 PM",
-      availableSeats: 120,
-    },
-    {
-      movie: "6754b5385308892ab83e5055",
-      theater: "Theater 3",
-      screen: 3,
-      date: new Date("2024-12-16"),
-      time: "6:00 PM",
-      availableSeats: 80,
-    },
-    {
-      movie: "6754b5385308892ab83e5061",
-      theater: "Theater 4",
-      screen: 4,
-      date: new Date("2024-12-16"),
-      time: "9:00 PM",
-      availableSeats: 50,
-    },
-    {
-      movie: "6754b5385308892ab83e5064",
-      theater: "Theater 5",
-      screen: 5,
-      date: new Date("2024-12-17"),
-      time: "5:30 PM",
-      availableSeats: 150,
-    },
-  ];
-
+// Sample showtimes data
 const seedShowtimes = async () => {
   try {
+    // Connect to your MongoDB database
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("Database connected!");
+    console.log("Connected to MongoDB");
+
+    // Retrieve a list of movies (assuming your movies collection is populated)
+    const movies = await Movie.find();
+    if (movies.length === 0) {
+      throw new Error("No movies found. Please seed the movies collection first.");
+    }
+
+    // Sample showtimes to seed
+    const showtimesData = [
+      {
+        movie: movies[0]._id, // Replace with dynamic movie IDs
+        theater: "Cineplex Yonge-Dundas",
+        screen: 1,
+        date: new Date("2024-12-15"),
+        time: "18:30",
+        availableSeats: 100,
+      },
+      {
+        movie: movies[1]._id, // Replace with dynamic movie IDs
+        theater: "SilverCity Richmond Hill",
+        screen: 3,
+        date: new Date("2024-12-16"),
+        time: "20:00",
+        availableSeats: 120,
+      },
+      {
+        movie: movies[0]._id, // Another showtime for the same movie
+        theater: "Cineplex Yonge-Dundas",
+        screen: 2,
+        date: new Date("2024-12-17"),
+        time: "14:00",
+        availableSeats: 80,
+      },
+    ];
+
+    // Clear the existing collection (optional)
     await Showtime.deleteMany();
-    await Showtime.insertMany(showtimes);
-    console.log("Showtimes seeded successfully!");
-    process.exit(0);
-  } catch (error) {
-    console.error("Error seeding showtimes:", error.message);
-    process.exit(1);
+    console.log("Cleared existing showtimes");
+
+    // Insert the new showtimes
+    const insertedShowtimes = await Showtime.insertMany(showtimesData);
+    console.log("Seeded showtimes:", insertedShowtimes);
+  } catch (err) {
+    console.error("Error seeding showtimes:", err);
+  } finally {
+    mongoose.connection.close();
+    console.log("Database connection closed");
   }
 };
+
+// Run the seed function
 seedShowtimes();
