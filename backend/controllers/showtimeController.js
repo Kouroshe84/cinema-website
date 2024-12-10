@@ -29,7 +29,8 @@ const addShowtime = async (req, res) => {
 };
 
 // Get showtimes by movie ID
-router.get("/movie/:movieId", async (req, res) => {
+//router.get("/movie/:movieId", async (req, res) => {
+const getShowtimesByMovieId = async(req, res) => {
     try {
         const { movieId } = req.params;
         const showtimes = await Showtime.find({ movie: movieId }).populate("movie");
@@ -40,7 +41,7 @@ router.get("/movie/:movieId", async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch showtimes", error: error.message });
     }
-});
+};
 
 
 // Get a showtime by ID
