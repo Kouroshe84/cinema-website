@@ -25,6 +25,11 @@ const addUser = async (req, res) => {
     const createdUser = await user.save();
     res.status(201).json(createdUser);
   } catch (error) {
+    // Check if the error is due to a duplicate email
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "User with this email already exists" });
+    }
+    // For other errors, return a generic error message
     res.status(400).json({ message: "Failed to add user", error: error.message });
   }
 };
