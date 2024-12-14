@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 exports.getAllOrders = async(req, res) => {
     try{
-        const orders = await Order.find({});
+        const orders = await Order.find({isDeleted: false});
         res.status(200).send(orders);
     } catch(err){
         res.status(500).send({message: "Error fetching order", error: err.message});
@@ -71,3 +71,19 @@ exports.createOrder = async (req, res) => {
         res.status(500).send({ message: "Failed to create order", error: err.message });
     }
 };
+
+exports.softDeleteOrder = async (req, res) =>{
+    try{
+        const orderId = req.params.id;
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            orderId,
+            {isDeleted: true},
+            {new: true} //Return the updated document
+        );
+
+        res.status(200).json({message: "Order soft deleted successfully", updatedOrder});
+    } catch (err) {
+        res.status(500).send({ message: "Error soft deleting order", error: err.message });
+    }
+}

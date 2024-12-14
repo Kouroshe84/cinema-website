@@ -14,4 +14,6 @@ router.get("/:id", orderController.getOrderById);
 
 router.get("/movie/:id", orderController.getOrderByMovie);
 
+router.patch("/:id/delete", orderController.softDeleteOrder)
+
 module.exports = router;
