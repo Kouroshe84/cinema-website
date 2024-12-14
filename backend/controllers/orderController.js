@@ -1,6 +1,15 @@
 const Order = require("../models/order");
 const mongoose = require("mongoose");
 
+exports.getAllOrders = async(req, res) => {
+    try{
+        const orders = await Order.find({});
+        res.status(200).send(orders);
+    } catch(err){
+        res.status(500).send({message: "Error fetching order", error: err.message});
+    }
+}
+
 exports.getOrderByMovie = async(req, res) =>{
     try{
         const {id} = req.params;
@@ -14,12 +23,12 @@ exports.getOrderByMovie = async(req, res) =>{
 exports.getOrderById = async (req, res) => {
     try {
         const { id } = req.params;
-        // console.log("Received ID:", id);
+        console.log("Received ID:", id);
 
         // Validate ObjectId format
-        // if (!mongoose.Types.ObjectId.isValid(id)) {
-        //     return res.status(400).send({ error: "Invalid ID format." });
-        // }
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({ error: "Invalid ID format." });
+        }
 
         // Find the order by ID
         const order = await Order.findById(id);

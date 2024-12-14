@@ -15,9 +15,9 @@ const orderSchema = new mongoose.Schema({
         required: true,
     },
     movieid: {
-        //type: mongoose.Schema.Types.ObjectId,
-        //ref: 'Movie', //connect to Movie collection
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'movies', //connect to movies collection
+        //type: String,
         required: true,
     },
     seats: {
